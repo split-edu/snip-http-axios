@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import Post from "./Post/Post.jsx";
+import axios from "axios";
 
 function Posts() {
-    const [postovi, postaviPostove] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/posts")
-            .then(res => res.json())
-            .then(data => postaviPostove(data));
+        axios("https://jsonplaceholder.typicode.com/posts")
+            .then(data => {
+                console.log(data);
+                return data;
+            })
+            .then(data => setPosts(data.data));
     }, []);
 
     return (
         <>
-            { postovi.length > 0 && postovi.map(post => (
-                <Post title={post.title} text={post.text} />
+            { posts.length > 0 && posts.map(post => (
+                <Post title={post.title} text={post.body} />
             )) }
         </>
     );
